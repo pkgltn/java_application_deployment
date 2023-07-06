@@ -54,26 +54,22 @@
     </dependency>
 
 
-    <!-- <dependency>
-                  
-      
-      <groupId>org.junit.jupiter</groupId>
-                  
-      
-      <artifactId>junit-jupiter-api</artifactId>
-                  
-      
-      <version>5.10.0-M1</version>
-                  
-      
-      <scope>test</scope>
-                
-    
-    </dependency>-->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.10.0-M1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>5.10.0-M1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>5.4.0</version>
     </dependency>
 
 
@@ -161,6 +157,15 @@
                               
           
           <version>3.0.2</version>
+
+          <configuration>
+            <archive>
+              <manifest>
+                <addClasspath>true</addClasspath>
+                <mainClass>com/udacity/catpoint/application/CatpointApp.java</mainClass>
+              </manifest>
+            </archive>
+          </configuration>
                             
         
         </plugin>
@@ -215,6 +220,8 @@
                             
         
         </plugin>
+
+
                       
       
       </plugins>
@@ -235,5 +242,14 @@
     <module>SecurityService</module>
 
   </modules>
-  
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.7.2.1</version>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>

@@ -17,16 +17,22 @@ import java.util.Set;
  * This is the class that should contain most of the business logic for our system, and it is the
  * class you will be writing unit tests for.
  */
-public class SecurityService {
+public class SecurityService  {
 
-    private FakeImageService imageService;
+    public ImageService getImageService() {
+        return imageService;
+    }
+
+    private ImageService imageService;
     private SecurityRepository securityRepository;
     private Set<StatusListener> statusListeners = new HashSet<>();
 
-    public SecurityService(SecurityRepository securityRepository, FakeImageService imageService) {
+    public SecurityService(SecurityRepository securityRepository, ImageService imageService) {
         this.securityRepository = securityRepository;
-        this.imageService = imageService;
+        this.imageService = /*new FakeImageService();*/imageService;
     }
+
+
 
     /**
      * Sets the current arming status for the system. Changing the arming status
@@ -89,15 +95,29 @@ public class SecurityService {
         }
     }
 
+    private void handleSensorActivatedAgain() {
+        //if(securityRepository.getArmingStatus() == ArmingStatus.DISARMED) {
+        //    return; //no problem if the system is disarmed
+        //}
+        switch(securityRepository.getAlarmStatus()) {
+            //case NO_ALARM -> setAlarmStatus(AlarmStatus.PENDING_ALARM);
+            case PENDING_ALARM -> setAlarmStatus(AlarmStatus.ALARM);
+        }
+    }
+
     /**
      * Internal method for updating the alarm status when a sensor has been deactivated
      */
     private void handleSensorDeactivated() {
-        switch(securityRepository.getAlarmStatus()) {
-            case PENDING_ALARM -> setAlarmStatus(AlarmStatus.NO_ALARM);
-            case ALARM -> setAlarmStatus(AlarmStatus.PENDING_ALARM);
-        }
+
+            switch (securityRepository.getAlarmStatus()) {
+                case PENDING_ALARM -> setAlarmStatus(AlarmStatus.NO_ALARM);
+                case ALARM -> setAlarmStatus(AlarmStatus.PENDING_ALARM);
+            }
+
     }
+
+
 
     /**
      * Change the activation status for the specified sensor and update alarm status if necessary.
@@ -109,11 +129,12 @@ public class SecurityService {
             handleSensorActivated();
         } else if (sensor.getActive() && !active) {
             handleSensorDeactivated();
+        }else if(sensor.getActive() && active){
+            handleSensorActivatedAgain();
         }
         sensor.setActive(active);
         securityRepository.updateSensor(sensor);
     }
-
     /**
      * Send an image to the SecurityService for processing. The securityService will use its provided
      * ImageService to analyze the image for cats and update the alarm status accordingly.
