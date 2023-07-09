@@ -1,5 +1,6 @@
 package com.udacity.catpoint.application;
 
+import com.udacity.catpoint.data.ArmingStatus;
 import com.udacity.catpoint.data.Sensor;
 import com.udacity.catpoint.data.SensorType;
 import com.udacity.catpoint.service.SecurityService;
@@ -22,6 +23,10 @@ public class SensorPanel extends JPanel {
     private JTextField newSensorNameField = new JTextField();
     private JComboBox newSensorTypeDropdown = new JComboBox(SensorType.values());
     private JButton addNewSensorButton = new JButton("Add New Sensor");
+
+    protected JPanel getSensorListPanel() {
+        return sensorListPanel;
+    }
 
     private JPanel sensorListPanel;
     private JPanel newSensorPanel;
@@ -66,21 +71,24 @@ public class SensorPanel extends JPanel {
      * will display in the order that they are created.
      * @param p The Panel to populate with the current list of sensors
      */
-    private void updateSensorList(JPanel p) {
+    public void updateSensorList(JPanel p) {
         p.removeAll();
         securityService.getSensors().stream().sorted().forEach(s -> {
-            JLabel sensorLabel = new JLabel(String.format("%s(%s): %s", s.getName(),  s.getSensorType().toString(),(s.getActive() ? "Active" : "Inactive")));
-            JButton sensorToggleButton = new JButton((s.getActive() ? "Deactivate" : "Activate"));
-            JButton sensorRemoveButton = new JButton("Remove Sensor");
+                JLabel sensorLabel = new JLabel(String.format("%s(%s): %s", s.getName(), s.getSensorType().toString(), (s.getActive() ? "Active" : "Inactive")));
+                JButton sensorToggleButton = new JButton((s.getActive() ? "Deactivate" : "Activate"));
+                JButton sensorRemoveButton = new JButton("Remove Sensor");
 
-            sensorToggleButton.addActionListener(e -> setSensorActivity(s, !s.getActive()) );
-            sensorRemoveButton.addActionListener(e -> removeSensor(s));
+                sensorToggleButton.addActionListener(e -> setSensorActivity(s, !s.getActive()));
+                sensorRemoveButton.addActionListener(e -> removeSensor(s));
 
-            //hard code some sizes, tsk tsk
-            p.add(sensorLabel, "width 300:300:300");
-            p.add(sensorToggleButton, "width 100:100:100");
-            p.add(sensorRemoveButton, "wrap");
-        });
+                //hard code some sizes, tsk tsk
+                p.add(sensorLabel, "width 300:300:300");
+                p.add(sensorToggleButton, "width 100:100:100");
+                p.add(sensorRemoveButton, "wrap");
+
+            });
+
+
 
         repaint();
         revalidate();

@@ -1,12 +1,15 @@
 package com.udacity.catpoint.application;
 
 import com.udacity.catpoint.data.ArmingStatus;
+import com.udacity.catpoint.data.Sensor;
 import com.udacity.catpoint.service.SecurityService;
 import com.udacity.catpoint.service.StyleService;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -18,11 +21,14 @@ public class ControlPanel extends JPanel {
     private SecurityService securityService;
     private Map<ArmingStatus, JButton> buttonMap;
 
+    private SensorPanel sensorPanel;
 
-    public ControlPanel(SecurityService securityService) {
+
+    public ControlPanel(SecurityService securityService,SensorPanel sensorPanel) {
         super();
         setLayout(new MigLayout());
         this.securityService = securityService;
+        this.sensorPanel=sensorPanel;
 
         JLabel panelLabel = new JLabel("System Control");
         panelLabel.setFont(StyleService.HEADING_FONT);
@@ -38,8 +44,20 @@ public class ControlPanel extends JPanel {
             v.addActionListener(e -> {
                 securityService.setArmingStatus(k);
                 buttonMap.forEach((status, button) -> button.setBackground(status == k ? status.getColor() : null));
+                if(securityService.getArmingStatus()== ArmingStatus.ARMED_AWAY||securityService.getArmingStatus()==ArmingStatus.ARMED_HOME) {
+                    if (securityService.getSensors().stream().allMatch(sensor -> !sensor.getActive())) {
+                        sensorPanel.updateSensorList(sensorPanel.getSensorListPanel());
+//                        securityService.getSensors().forEach(sensor -> sensorPanel.setSensorActivity(sensor,false));
+//                        for (Iterator<Sensor> iterator = securityService.getSensors().iterator(); iterator.hasNext();) {
+//                            Sensor s1 = iterator.next();
+//                            sensorPanel.setSensorActivity(s1,false);
+//
+//                        }
+                    }
+                }
             });
         });
+
 
         //map order above is arbitrary, so loop again in order to add buttons in enum-order
         Arrays.stream(ArmingStatus.values()).forEach(status -> add(buttonMap.get(status)));

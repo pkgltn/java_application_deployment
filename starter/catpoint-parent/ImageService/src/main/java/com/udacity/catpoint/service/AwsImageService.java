@@ -40,6 +40,12 @@ public class AwsImageService implements ImageService{
     //aws recommendation is to maintain only a single instance of client objects
     private static RekognitionClient rekognitionClient;
 
+    public boolean getImageContainsCat() {
+        return imageContainsCat;
+    }
+
+    private boolean imageContainsCat;
+
     public AwsImageService() {
         Properties props = new Properties();
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("config.properties")) {

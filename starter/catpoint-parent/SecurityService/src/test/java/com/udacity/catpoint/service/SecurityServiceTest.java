@@ -33,7 +33,7 @@ public class SecurityServiceTest {
     /**
      * Rigorous Test :-)
      *
-//     */
+     */
 
     private SecurityService securityService;
     @Mock
@@ -44,16 +44,14 @@ public class SecurityServiceTest {
     @Mock
     private ImageService imageService;
 
+    @Mock
     private Sensor sensor;
-
-
-
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
         securityService = new SecurityService(securityRepository,imageService);
-        sensor= new Sensor("Window",SensorType.WINDOW);
+        //sensor= new Sensor("Window",SensorType.WINDOW);
         securityService.addSensor(sensor);
 
     }
@@ -95,6 +93,7 @@ public class SecurityServiceTest {
         securityService.changeSensorActivationStatus(new Sensor(input.name(),input),true);
         Mockito.verify(securityRepository).setAlarmStatus(AlarmStatus.ALARM);
     }
+
     //If pending alarm and all sensors are inactive, return to no alarm state.
     @ParameterizedTest
     @EnumSource(SensorType.class)

@@ -50,7 +50,25 @@ public class ImagePanel extends JPanel implements StatusListener {
                 return;
             }
             try {
+                //System.out.println(chooser.getSelectedFile().getAbsolutePath());
                 currentCameraImage = ImageIO.read(chooser.getSelectedFile());
+                //File directory = new File("java_application_deployment\\starter\\catpoint-parent\\sample-cat.jpg/");
+                //System.out.println(directory.getAbsolutePath());
+                //BufferedImage newCurrentCameraImage=ImageIO.read(directory);
+                //boolean b=true;
+                //if (currentCameraImage.getWidth() == newCurrentCameraImage.getWidth() && currentCameraImage.getHeight() == newCurrentCameraImage.getHeight()) {
+                //        for (int x = 0; x < currentCameraImage.getWidth(); x++) {
+                //            for (int y = 0; y < currentCameraImage.getHeight(); y++) {
+                //                if (currentCameraImage.getRGB(x, y) != newCurrentCameraImage.getRGB(x, y))
+                //                    b=false;
+                //            }
+                //        }
+                //    } else {
+                //        b= false;
+                //    }
+
+                //boolean b= currentCameraImage.equals(newCurrentCameraImage);
+                //System.out.println(b);
                 Image tmp = new ImageIcon(currentCameraImage).getImage();
                 cameraLabel.setIcon(new ImageIcon(tmp.getScaledInstance(IMAGE_WIDTH, IMAGE_HEIGHT, Image.SCALE_SMOOTH)));
             } catch (IOException |NullPointerException ioe) {

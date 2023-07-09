@@ -8,6 +8,7 @@ import com.udacity.catpoint.data.Sensor;
 
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -43,6 +44,28 @@ public class SecurityService  {
         if(armingStatus == ArmingStatus.DISARMED) {
             setAlarmStatus(AlarmStatus.NO_ALARM);
         }
+        else if(armingStatus==ArmingStatus.ARMED_AWAY || armingStatus==ArmingStatus.ARMED_HOME){
+            Set<Sensor> sensors = new HashSet<>();
+            for (Iterator<Sensor> iterator = securityRepository.getSensors().iterator(); iterator.hasNext();) {
+                Sensor s = iterator.next();
+                sensors.add(s);
+            }
+            if(sensors.stream().allMatch(s->s.getActive()==true)){
+                for(Sensor s: sensors){
+                    if(s.getActive()==true){
+                        s.setActive(false);
+                        securityRepository.updateSensor(s);
+                    }
+                }
+            }
+            if(imageService.getImageContainsCat()){
+                setAlarmStatus(AlarmStatus.ALARM);
+        }
+
+        }
+//        if(imageService.getImageContainsCat() && armingStatus==ArmingStatus.ARMED_HOME){
+//            setAlarmStatus(AlarmStatus.ALARM);
+//        }
         securityRepository.setArmingStatus(armingStatus);
     }
 
@@ -54,7 +77,7 @@ public class SecurityService  {
     private void catDetected(Boolean cat) {
         if(cat && getArmingStatus() == ArmingStatus.ARMED_HOME) {
             setAlarmStatus(AlarmStatus.ALARM);
-        } else {
+        } else if(!cat && this.getSensors().stream().allMatch(s->s.getActive()==false)){
             setAlarmStatus(AlarmStatus.NO_ALARM);
         }
 
@@ -112,7 +135,7 @@ public class SecurityService  {
 
             switch (securityRepository.getAlarmStatus()) {
                 case PENDING_ALARM -> setAlarmStatus(AlarmStatus.NO_ALARM);
-                case ALARM -> setAlarmStatus(AlarmStatus.PENDING_ALARM);
+                //case ALARM -> setAlarmStatus(AlarmStatus.PENDING_ALARM);
             }
 
     }

@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import java.lang.reflect.Type;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.prefs.Preferences;
 
 /**
@@ -36,6 +37,7 @@ public class PretendDatabaseSecurityRepositoryImpl implements SecurityRepository
         // this is likely an impractical solution for a real system
         String sensorString = prefs.get(SENSORS, null);
         if(sensorString == null) {
+            //sensors= new ConcurrentSkipListSet<>();
             sensors = new TreeSet<>();
         } else {
             Type type = new TypeToken<Set<Sensor>>() {
