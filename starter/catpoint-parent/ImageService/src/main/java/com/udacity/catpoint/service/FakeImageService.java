@@ -19,9 +19,15 @@ public class FakeImageService implements ImageService  {
 
     private boolean imageContainsCat;
 
-    File sample_cat = new File("java_application_deployment\\starter\\catpoint-parent\\sample-cat.jpg/");
-    File sample_not_cat = new File("java_application_deployment\\starter\\catpoint-parent\\sample-not-cat.jpg/");
-    File sample_not_a_cat_fail = new File("java_application_deployment\\starter\\catpoint-parent\\sample-not-a-cat-fail.jpg/");
+//    File sample_cat = new File("catpoint-parent\\sample-cat.jpg/");
+//    File sample_not_cat = new File("catpoint-parent\\sample-not-cat.jpg/");
+//    File sample_not_a_cat_fail = new File("catpoint-parent\\sample-not-a-cat-fail.jpg/");
+//    System.out.println(sample_cat.getAbsolutePath());
+//    System.out.println(sample_not_cat.getAbsolutePath());
+//    System.out.println(sample_not_a_cat_fail.getAbsolutePath());
+    File sample_cat = new File("sample-cat.jpg");
+    File sample_not_cat = new File("sample-not-cat.jpg");
+    File sample_not_a_cat_fail = new File("sample-not-a-cat-fail.jpg");
 
     private BufferedImage sampleCatImage;
     private BufferedImage sampleNotCatImage;

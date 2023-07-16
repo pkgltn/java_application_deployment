@@ -1,15 +1,12 @@
 package com.udacity.catpoint.application;
 
 import com.udacity.catpoint.data.ArmingStatus;
-import com.udacity.catpoint.data.Sensor;
-import com.udacity.catpoint.service.SecurityService;
-import com.udacity.catpoint.service.StyleService;
+import com.udacity.catpoint.SecurityService.SecurityService;
+import com.udacity.catpoint.SecurityService.StyleService;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.stream.Collectors;
 
